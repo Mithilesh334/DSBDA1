@@ -1,0 +1,37 @@
+import pandas as pd
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+
+# Load the data
+df = pd.read_csv("train.csv")
+
+
+# Show the first few rows
+df.head()
+
+
+
+# Check for missing values
+df.isnull().sum()
+
+
+
+# Summary statistics
+df.describe(include='all')
+
+
+
+df.shape
+
+
+
+# Convert 'Sex' and 'Embarked' to numeric using get_dummies
+df_encoded = pd.get_dummies(df, columns=['Sex', 'Embarked'], drop_first=True)
+
+# Drop irrelevant columns (optional)
+df_encoded.drop(['Name', 'Ticket', 'Cabin'], axis=1, inplace=True)
+
+# Show updated DataFrame
+df_encoded.head()
