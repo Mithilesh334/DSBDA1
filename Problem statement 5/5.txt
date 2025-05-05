@@ -1,0 +1,61 @@
+import pandas as pd
+import numpy as np
+import seaborn as sns
+
+
+
+df=sns.load_dataset('iris')
+
+
+
+df.head()
+
+
+df.dtypes
+
+
+
+
+from sklearn.preprocessing import LabelEncoder
+le=LabelEncoder()
+df["species"]=le.fit_transform(df["species"])
+
+
+
+
+grp=pd.DataFrame(df.groupby("species").agg(['mean','median', 'min', 'max', 'std']))
+
+
+
+
+grp
+
+
+
+
+
+species=df['species'].unique()
+
+
+
+
+for sp in species:
+    data = df[df['species'] == sp]
+    print(data.describe())
+
+
+
+
+
+# Create a dictionary: species -> list of sepal_length values
+sepal_lengths_by_species = {species: df[df['species'] == species]['sepal_length'].tolist()
+                             for species in df['species'].unique()}
+
+
+
+
+
+# Print the dictionary
+print("Sepal lengths grouped by species:\n")
+for species, lengths in sepal_lengths_by_species.items():
+    print(f"{species}: {lengths[:5]}...")  # show first 5 values per species

@@ -1,0 +1,50 @@
+import pandas as pd
+
+# Load dataset
+df = pd.read_csv("train.csv")
+
+# Show the first 5 rows
+print(df.head())
+
+
+
+
+# Count of missing values per column
+print(df.isnull().sum())
+
+
+
+# Descriptive statistics
+print(df.describe(include='all'))
+
+
+
+print("Shape of dataset:", df.shape)
+
+
+
+print(df.dtypes)
+
+
+
+# Convert 'Sex' and 'Embarked' to category
+df['Sex'] = df['Sex'].astype('category')
+df['Embarked'] = df['Embarked'].astype('category')
+
+# Optional: Convert 'Survived' and 'Pclass' to category if used in classification models
+df['Survived'] = df['Survived'].astype('category')
+df['Pclass'] = df['Pclass'].astype('category')
+
+
+
+
+from sklearn.preprocessing import MinMaxScaler
+
+# Initialize scaler
+scaler = MinMaxScaler()
+
+# Normalize 'Age' and 'Fare' (skip if they have many missing values without imputation)
+df[['Age', 'Fare']] = scaler.fit_transform(df[['Age', 'Fare']])
+
+# Show final data snapshot
+print(df[['Age', 'Fare']].head())

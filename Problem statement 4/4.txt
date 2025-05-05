@@ -1,0 +1,67 @@
+import pandas as pd
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+from scipy.stats import skew
+from scipy.stats import boxcox
+
+# Load dataset
+df = pd.read_csv("StudentsPerformance.csv")
+
+
+
+
+# Check for missing values
+print("Missing values in each column:")
+print(df.isnull().sum())
+
+# View summary of data types and possible inconsistencies
+print("\nData Info:")
+df.info()
+
+# Unique values in categorical columns (optional consistency check)
+print("\nUnique values in 'gender':", df['gender'].unique())
+print("Unique values in 'lunch':", df['lunch'].unique())
+
+
+
+
+# Plot original distribution
+sns.histplot(df['math score'], kde=True)
+plt.title("Original Distribution of Math Score")
+plt.show()
+
+
+
+original_skew = skew(df['math score'])
+print(f"Skewness before transformation: {original_skew:.2f}")
+
+
+
+
+# Shift + log to avoid log(0)
+df['math_log'] = np.log1p(df['math score'])
+
+# Plot after log transformation
+sns.histplot(df['math_log'], kde=True)
+plt.title("Log Transformed Math Score")
+plt.show()
+
+print(f"Skewness after log transform: {skew(df['math_log']):.2f}")
+   
+
+OR
+
+
+# Ensure values are positive
+math_positive = df['math score'] + 1
+
+# Apply Box-Cox transformation
+df['math_boxcox'], fitted_lambda = boxcox(math_positive)
+
+sns.histplot(df['math_boxcox'], kde=True)
+plt.title("Box-Cox Transformed Math Score")
+plt.show()
+
+print(f"Skewness after Box-Cox: {skew(df['math_boxcox']):.2f}")
+print(f"Lambda used for Box-Cox: {fitted_lambda:.2f}")

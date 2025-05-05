@@ -1,0 +1,121 @@
+# Importing the libraries
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
+import pandas as pd
+import seaborn as sns
+
+
+
+# Load the data
+#from google.colab import drive
+#drive.mount('/content/drive/')
+path="iris.csv"
+data= pd.read_csv(path)
+data.head()
+
+
+
+from sklearn.datasets import load_iris
+import pandas as pd
+
+# Load the iris dataset
+iris = load_iris()
+
+# Create a DataFrame with feature data
+data = pd.DataFrame(iris.data, columns=iris.feature_names)
+
+# Add the target (species)
+data['species'] = iris.target
+
+
+
+
+
+# Independent variables (first 4 columns)
+X = data.iloc[:, :4].values
+
+# Dependent variable (species column)
+y = data['species'].values
+
+
+print(data.columns)
+
+
+
+
+
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+
+# Assuming X and y are already defined (e.g., from Iris dataset)
+# Example: X = data.iloc[:, :4].values, y = data['species'].values
+
+# Step 1: Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
+
+# Step 2: Initialize the scaler
+sc = StandardScaler()
+
+# Step 3: Scale the feature data
+X_train = sc.fit_transform(X_train)
+X_test = sc.transform(X_test)
+
+
+
+
+# Fitting Naive Bayes Classification to the Training set with linear kernel
+from sklearn.naive_bayes import GaussianNB
+nvclassifier = GaussianNB()
+nvclassifier.fit(X_train, y_train)
+
+
+
+
+# Predicting the Test set results
+y_pred = nvclassifier.predict(X_test)
+print(y_pred)
+
+
+
+
+#lets see the actual and predicted value side by side
+y_compare = np.vstack((y_test,y_pred)).T
+#actual value on the left side and predicted value on the right hand side
+#printing the top 5 values
+y_compare[:5,:]
+
+
+
+
+# Making the Confusion Matrix
+from sklearn.metrics import confusion_matrix
+cm = confusion_matrix(y_test, y_pred)
+sns.heatmap(cm,annot=True)
+plt.xlabel("Predicted Label")
+plt.ylabel("Actual Label")
+plt.title("Confusion Matrix")
+plt.show()
+print(cm)
+
+
+
+
+from sklearn.metrics import accuracy_score
+from sklearn.metrics import classification_report
+from sklearn.metrics import confusion_matrix
+results = confusion_matrix(y_test, y_pred)
+print ('Confusion Matrix :')
+print(results)
+print ('Accuracy Score :',accuracy_score(y_test, y_pred))
+print('Classification Report : ')
+print (classification_report(y_test, y_pred))
+
+
+
+
+#error rate
+Accuracy=accuracy_score(y_test, y_pred)
+print(Accuracy)
+Error_rate=1-Accuracy
+print(Error_rate)

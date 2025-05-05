@@ -1,0 +1,54 @@
+import pandas as pd
+from sklearn.datasets import load_iris
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load dataset
+iris = load_iris()
+
+# Convert to DataFrame
+df = pd.DataFrame(data=iris.data, columns=iris.feature_names)
+df['species'] = iris.target  # Adding the target column
+
+# Display the first few rows
+print(df.head())
+
+
+
+
+# 1. List features and their types
+print("\nFeature Names and Data Types:")
+print(df.dtypes)
+
+
+
+# Plot histograms for each numeric column
+df.iloc[:, :-1].hist(bins=20, figsize=(10, 6), color='skyblue', edgecolor='black')
+plt.suptitle("Histograms of Iris Features", fontsize=16)
+plt.show()
+
+
+
+# Create individual boxplots for each feature
+plt.figure(figsize=(10, 6))
+sns.boxplot(data=df.iloc[:, :-1], palette='Set2')
+plt.title("Boxplots of Iris Features")
+plt.show()
+
+
+
+
+# Subplots: Histogram for each feature using matplotlib
+features = df.columns[:-1]
+plt.figure(figsize=(12, 8))
+
+for i, feature in enumerate(features):
+    plt.subplot(2, 2, i+1)
+    sns.histplot(df[feature], kde=True, color='skyblue')
+    plt.title(f'Distribution of {feature}')
+    plt.xlabel(feature)
+    plt.ylabel("Count")
+
+plt.tight_layout()
+plt.suptitle("Subplot: Histograms of All Features", fontsize=16, y=1.05)
+plt.show()

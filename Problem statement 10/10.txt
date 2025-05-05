@@ -1,0 +1,60 @@
+import pandas as pd
+import numpy as np
+
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+df = sn.load_dataset('titanic')
+
+df.head()
+
+
+
+sns.distplot(df['fare'])  # Deprecated, but still works in older versions
+plt.show()
+
+
+
+sns.distplot(df['fare'], kde=False)
+
+
+
+sns.distplot(df['fare'], kde=False, bins=5)
+
+
+
+sns.distplot(df['fare'], hist=False)
+
+
+
+sns.histplot(df['fare'],bins=30)
+
+
+
+# 1.
+sns.jointplot(x='age', y='fare', data=df)
+
+
+
+
+sns.jointplot(x='age', y='fare', data=df, kind='hex')
+
+
+
+
+df = df.dropna()
+print(df)
+
+
+
+
+sns.rugplot(df['fare'])
+
+
+
+#Categorical Plots
+sns.barplot(x='sex', y='age', data=df)
+
+
+
+sns.countplot(x='sex', data=df)
